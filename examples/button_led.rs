@@ -7,22 +7,25 @@ use wio_terminal as wio;
 
 use wio::entry;
 use wio::pac::Peripherals;
-use wio::prelude::*;
+
+use tmr_wio::button::Button;
+use tmr_wio::led::Led;
 
 #[entry]
 fn main() -> ! {
     let peripherals = Peripherals::take().unwrap();
     let mut pins = wio::Pins::new(peripherals.PORT);
-    let mut led = pins.user_led.into_push_pull_output(&mut pins.port);
-    let button1 = pins.button1.into_floating_input(&mut pins.port);
-    let button2 = pins.button2.into_floating_input(&mut pins.port);
-    let button3 = pins.button3.into_floating_input(&mut pins.port);
+    let mut led = Led::new(pins.user_led, &mut pins.port);
+    let button1 = Button::new(pins.button1, &mut pins.port);
+    //    let button2 = Button::new(pins.button2, &mut pins.port);
+    //    let button3 = Button::new(pins.button3, &mut pins.port);
 
     loop {
-        if button1.is_low().unwrap() || button2.is_low().unwrap() || button3.is_low().unwrap() {
-            led.set_high().unwrap()
+        //        if button1.is_pressed() || button2.is_pressed() || button3.is_pressed() {
+        if button1.is_pressed() {
+            led.turn_on();
         } else {
-            led.set_low().unwrap()
+            led.turn_off();
         }
     }
 }
