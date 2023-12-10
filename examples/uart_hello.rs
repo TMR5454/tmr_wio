@@ -5,7 +5,8 @@ use panic_halt as _;
 use wio_terminal as wio;
 
 use wio::hal::clock::GenericClockController;
-use wio::pac::Peripherals;
+use wio::hal::delay::Delay;
+use wio::pac::{CorePeripherals, Peripherals};
 use wio::prelude::*;
 use wio::{entry, Pins, Sets};
 
@@ -29,9 +30,13 @@ fn main() -> ! {
         &mut sets.port,
     );
 
+    let core = CorePeripherals::take().unwrap();
+    let mut delay = Delay::new(core.SYST, &mut clocks);
+
     loop {
         for c in b"hello world\n".iter() {
             nb::block!(serial.write(*c)).unwrap();
+            delay.delay_ms(1000u32);
         }
     }
 }
