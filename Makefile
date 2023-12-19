@@ -7,9 +7,9 @@ export RUSTFLAGS=-C link-arg=-Tlink.x -C link-arg=--nmagic
 
 .phony: all clean
 
-all: simple_buzzer
+all: pwm_buzzer
 
-simple_buzzer button_led uart_hello echo_and_ledtoggle:
+pwm_buzzer simple_buzzer button_led uart_hello echo_and_ledtoggle:
 	$(MAKE) fmt
 	cargo hf2 $(BUILD_OPTIONS) --example $@
 
