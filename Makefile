@@ -9,13 +9,19 @@ export RUSTFLAGS=-C link-arg=-Tlink.x -C link-arg=--nmagic
 
 all: pwm_buzzer
 
-pwm_buzzer simple_buzzer button_led uart_hello echo_and_ledtoggle:
+pwm_buzzer simple_buzzer button_led uart_hello echo_and_ledtoggle spi_read_display_power_mode lcd:
 	$(MAKE) fmt
 	cargo hf2 $(BUILD_OPTIONS) --example $@
 
 
 fmt:
 	cargo fmt
+
+env:
+	rustup target add thumbv7em-none-eabihf
+	cargo install cargo-generate
+	cargo install hf2-cli
+	cargo install cargo-hf2
 
 clean:
 	cargo clean
